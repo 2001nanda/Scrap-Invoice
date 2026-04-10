@@ -10,7 +10,6 @@ export default function ItemTable({ rows, prices, date, onUpdate, onDelete, onAd
           <thead>
             <tr className="bg-gray-800 text-white">
               <th className="px-3 py-3 text-center w-12">S.No</th>
-              <th className="px-3 py-3 text-left">Date</th>
               <th className="px-3 py-3 text-left">Item</th>
               <th className="px-3 py-3 text-right">Price/KG</th>
               <th className="px-3 py-3 text-right">Qty (KG)</th>
@@ -21,7 +20,7 @@ export default function ItemTable({ rows, prices, date, onUpdate, onDelete, onAd
           <tbody>
             {rows.length === 0 ? (
               <tr>
-                <td colSpan={7} className="text-center py-10 text-gray-400 italic">
+                <td colSpan={6} className="text-center py-10 text-gray-400 italic">
                   No items yet. Click "Add Row" to start.
                 </td>
               </tr>
@@ -41,7 +40,7 @@ export default function ItemTable({ rows, prices, date, onUpdate, onDelete, onAd
           </tbody>
           <tfoot>
             <tr className="bg-gray-50 border-t-2 border-gray-300">
-              <td colSpan={5} className="px-3 py-3 text-right font-bold text-gray-700 text-base">
+              <td colSpan={4} className="px-3 py-3 text-right font-bold text-gray-700 text-base">
                 Grand Total
               </td>
               <td className="px-3 py-3 text-right font-bold text-green-700 text-lg">

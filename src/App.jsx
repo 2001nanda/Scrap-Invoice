@@ -33,14 +33,17 @@ export default function App() {
   const saved = loadFromStorage();
 
   const [shopName, setShopName] = useState(saved?.shopName ?? 'My Scrap Shop');
+  const [mobileNumber, setMobileNumber] = useState(saved?.mobileNumber ?? '');
+  const [address, setAddress] = useState(saved?.address ?? 'K NarayanaPura Circle, toward N Naganahalli Road');
+  const [qrCode, setQrCode] = useState(saved?.qrCode ?? '');
   const [date, setDate] = useState(saved?.date ?? new Date());
   const [prices, setPrices] = useState(saved?.prices ?? { ...DEFAULT_PRICES });
   const [rows, setRows] = useState(saved?.rows ?? []);
 
   // Persist to localStorage on every change
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ shopName, date, prices, rows }));
-  }, [shopName, date, prices, rows]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ shopName, mobileNumber, address, qrCode, date, prices, rows }));
+  }, [shopName, mobileNumber, address, qrCode, date, prices, rows]);
 
   const handlePriceChange = useCallback((item, newPrice) => {
     setPrices(prev => ({ ...prev, [item]: newPrice }));
@@ -78,6 +81,12 @@ export default function App() {
         <Header
           shopName={shopName}
           setShopName={setShopName}
+          mobileNumber={mobileNumber}
+          setMobileNumber={setMobileNumber}
+          address={address}
+          setAddress={setAddress}
+          qrCode={qrCode}
+          setQrCode={setQrCode}
           date={date}
           setDate={setDate}
         />

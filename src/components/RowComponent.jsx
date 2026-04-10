@@ -17,15 +17,6 @@ export default function RowComponent({ row, index, prices, onUpdate, onDelete, d
     <tr className="border-b border-gray-100 hover:bg-gray-50 transition">
       <td className="px-3 py-2 text-center text-gray-500 text-sm">{index + 1}</td>
 
-      <td className="px-3 py-2 text-sm text-gray-700">
-        <span className="no-print hidden sm:hidden">
-          {date ? date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'}
-        </span>
-        <span className="print-date">
-          {date ? date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'}
-        </span>
-      </td>
-
       <td className="px-3 py-2">
         <select
           value={row.item}
@@ -43,14 +34,14 @@ export default function RowComponent({ row, index, prices, onUpdate, onDelete, d
         {fmt(row.price)}
       </td>
 
-      <td className="px-3 py-2">
+      <td className="px-3 py-2 text-right">
         <input
           type="number"
           min="0"
           step="0.1"
           value={row.qty}
           onChange={e => handleQtyChange(e.target.value)}
-          className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-gray-800 w-24 text-right focus:outline-none focus:ring-2 focus:ring-blue-300 no-print"
+          className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-gray-800 w-full text-right focus:outline-none focus:ring-2 focus:ring-blue-300 no-print"
           placeholder="0"
         />
         <span className="hidden print:inline text-sm">{row.qty} kg</span>
