@@ -1,15 +1,89 @@
 @import "tailwindcss";
 @import "react-datepicker/dist/react-datepicker.css";
 
+/* Base smooth scrolling and font anti-aliasing */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: #1e293b;
+  background-color: #f8fafc;
+}
+
+/* React DatePicker Custom Styling */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__header {
+  background-color: #4f46e5 !important;
+  border-bottom: none !important;
+  padding-top: 10px !important;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header,
+.react-datepicker__day-name {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #4f46e5 !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+}
+
+.react-datepicker__day:hover {
+  border-radius: 8px !important;
+}
+
+/* Print Rules for A4 Paper */
 @media print {
+  @page {
+    size: A4;
+    margin: 10mm 12mm;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 12pt;
+    color: #000000 !important;
+  }
+
   .no-print {
     display: none !important;
   }
-  body {
-    background: white;
-  }
-  .print-container {
+
+  #printable-invoice {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
     box-shadow: none !important;
     border: none !important;
+  }
+
+  table {
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  .break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
 }

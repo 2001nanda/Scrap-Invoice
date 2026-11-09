@@ -1,27 +1,36 @@
 import RowComponent from './RowComponent';
+import { Plus } from 'lucide-react';
+import { formatINR } from '../utils/storage';
 
-const fmt = n => `₹${Number(n).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-
-export default function ItemTable({ rows, prices, date, onUpdate, onDelete, onAddRow, grandTotal }) {
+export default function ItemTable({ 
+  rows, 
+  prices, 
+  date, 
+  onUpdate, 
+  onDelete, 
+  onAddRow, 
+  grandTotal,
+  availableItems = [] 
+}) {
   return (
-    <div>
-      <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+      <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-800 text-white">
-              <th className="px-3 py-3 text-center w-12">S.No</th>
-              <th className="px-3 py-3 text-left">Item</th>
-              <th className="px-3 py-3 text-right">Price/KG</th>
-              <th className="px-3 py-3 text-right">Qty (KG)</th>
-              <th className="px-3 py-3 text-right">Total</th>
-              <th className="px-3 py-3 text-center no-print w-12">Del</th>
+            <tr className="bg-slate-900 text-white text-[11px] font-bold uppercase tracking-wider">
+              <th className="px-3.5 py-3 text-center w-12">#</th>
+              <th className="px-3.5 py-3 text-left">Scrap Material</th>
+              <th className="px-3.5 py-3 text-right w-32">Price/KG</th>
+              <th className="px-3.5 py-3 text-right w-32">Qty (KG)</th>
+              <th className="px-3.5 py-3 text-right w-36">Total</th>
+              <th className="px-3.5 py-3 text-center no-print w-12">Del</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-slate-100">
             {rows.length === 0 ? (
               <tr>
-                <td colSpan={6} className="text-center py-10 text-gray-400 italic">
-                  No items yet. Click "Add Row" to start.
+                <td colSpan={6} className="text-center py-10 text-slate-400 italic">
+                  No items in this invoice yet. Click "Add Row" to start.
                 </td>
               </tr>
             ) : (
@@ -31,6 +40,7 @@ export default function ItemTable({ rows, prices, date, onUpdate, onDelete, onAd
                   row={row}
                   index={i}
                   prices={prices}
+                  availableItems={availableItems}
                   date={date}
                   onUpdate={onUpdate}
                   onDelete={onDelete}
@@ -39,12 +49,12 @@ export default function ItemTable({ rows, prices, date, onUpdate, onDelete, onAd
             )}
           </tbody>
           <tfoot>
-            <tr className="bg-gray-50 border-t-2 border-gray-300">
-              <td colSpan={4} className="px-3 py-3 text-right font-bold text-gray-700 text-base">
-                Grand Total
+            <tr className="bg-slate-50 border-t-2 border-slate-200">
+              <td colSpan={4} className="px-4 py-3.5 text-right font-bold text-slate-700 text-sm">
+                Grand Total Payable
               </td>
-              <td className="px-3 py-3 text-right font-bold text-green-700 text-lg">
-                {fmt(grandTotal)}
+              <td className="px-4 py-3.5 text-right font-black text-emerald-600 text-lg">
+                {formatINR(grandTotal)}
               </td>
               <td className="no-print" />
             </tr>
@@ -52,12 +62,13 @@ export default function ItemTable({ rows, prices, date, onUpdate, onDelete, onAd
         </table>
       </div>
 
-      <div className="mt-4 no-print">
+      <div className="p-4 bg-slate-50/50 border-t border-slate-100 no-print">
         <button
           onClick={onAddRow}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition shadow"
+          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-xs transition shadow-sm shadow-indigo-600/30 cursor-pointer"
         >
-          <span className="text-lg">+</span> Add Row
+          <Plus className="w-4 h-4" />
+          <span>Add Billing Row</span>
         </button>
       </div>
     </div>

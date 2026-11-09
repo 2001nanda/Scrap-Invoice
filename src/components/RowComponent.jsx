@@ -1,63 +1,67 @@
-import { ITEM_NAMES } from '../data/scrapItems';
+import { Trash2 } from 'lucide-react';
+import { formatINR } from '../utils/storage';
+import ScrapItemDropdown from './ScrapItemDropdown';
 
-const fmt = n => `₹${Number(n).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+export default function RowComponent({ row, index, prices = {}, onUpdate, onDelete, availableItems = [] }) {
+  const itemsList = availableItems.length > 0
+    ? availableItems
+    : Object.entries(prices).map(([name, price]) => ({ name, price, category: 'General' }));
 
-export default function RowComponent({ row, index, prices, onUpdate, onDelete, date }) {
-  const handleItemChange = (item) => {
-    onUpdate(row.id, { item, price: prices[item] ?? 0 });
+  const handleItemChange = (selectedItem) => {
+    const itemPrice = selectedItem.price !== undefined ? selectedItem.price : (prices[selectedItem.name] ?? 0);
+    onUpdate(row.id, { item: selectedItem.name, price: itemPrice });
   };
 
   const handleQtyChange = (qty) => {
-    onUpdate(row.id, { qty: qty === '' ? '' : Number(qty) });
+    onUpdate(row.id, { qty: qty === '' ? '' : Math.max(0, Number(qty)) });
   };
 
-  const rowTotal = (row.price || 0) * (row.qty || 0);
+  const rowTotal = (Number(row.price) || 0) * (Number(row.qty) || 0);
 
   return (
-    <tr className="border-b border-gray-100 hover:bg-gray-50 transition">
-      <td className="px-3 py-2 text-center text-gray-500 text-sm">{index + 1}</td>
+    <tr className="border-b border-slate-100 hover:bg-teal-50/20 transition-colors">
+      <td className="px-3.5 py-3 text-center text-slate-400 font-semibold text-xs">{index + 1}</td>
 
-      <td className="px-3 py-2">
-        <select
+      <td className="px-3.5 py-3 min-w-[240px]">
+        <ScrapItemDropdown
           value={row.item}
-          onChange={e => handleItemChange(e.target.value)}
-          className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300 w-full no-print"
-        >
-          {ITEM_NAMES.map(name => (
-            <option key={name} value={name}>{name}</option>
-          ))}
-        </select>
-        <span className="hidden print:inline text-sm">{row.item}</span>
-      </td>
-
-      <td className="px-3 py-2 text-sm text-gray-700 text-right">
-        {fmt(row.price)}
-      </td>
-
-      <td className="px-3 py-2 text-right">
-        <input
-          type="number"
-          min="0"
-          step="0.1"
-          value={row.qty}
-          onChange={e => handleQtyChange(e.target.value)}
-          className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-gray-800 w-full text-right focus:outline-none focus:ring-2 focus:ring-blue-300 no-print"
-          placeholder="0"
+          items={itemsList}
+          onChange={handleItemChange}
+          placeholder="Select material..."
         />
-        <span className="hidden print:inline text-sm">{row.qty} kg</span>
+        <span className="hidden print:inline text-sm font-bold text-slate-900">{row.item}</span>
       </td>
 
-      <td className="px-3 py-2 text-sm font-semibold text-gray-800 text-right">
-        {fmt(rowTotal)}
+      <td className="px-3.5 py-3 text-sm text-slate-700 text-right font-medium">
+        {formatINR(row.price)}
       </td>
 
-      <td className="px-3 py-2 text-center no-print">
+      <td className="px-3.5 py-3 text-right">
+        <div className="relative inline-flex items-center w-full max-w-[120px]">
+          <input
+            type="number"
+            min="0"
+            step="0.1"
+            value={row.qty}
+            onChange={e => handleQtyChange(e.target.value)}
+            className="border border-slate-200 rounded-xl px-2.5 py-2 text-sm font-bold text-slate-800 w-full text-right focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 no-print"
+            placeholder="0"
+          />
+        </div>
+        <span className="hidden print:inline text-sm font-bold">{row.qty} kg</span>
+      </td>
+
+      <td className="px-3.5 py-3 text-sm font-extrabold text-slate-900 text-right">
+        {formatINR(rowTotal)}
+      </td>
+
+      <td className="px-3.5 py-3 text-center no-print">
         <button
           onClick={() => onDelete(row.id)}
-          className="text-red-400 hover:text-red-600 text-lg transition"
+          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer"
           title="Delete row"
         >
-          ✕
+          <Trash2 className="w-4 h-4" />
         </button>
       </td>
     </tr>
